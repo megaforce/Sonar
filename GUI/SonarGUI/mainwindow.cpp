@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //this->setStyleSheet("background-color: black;");
     arduino_is_available = false;
     arduino_port_name = "";
-
+    this->setFixedSize(503,241);
     arduino = new QSerialPort;
 
     foreach(const QSerialPortInfo &serialPortInfo, QSerialPortInfo::availablePorts()){
@@ -62,6 +62,8 @@ void MainWindow::getSerialData()
     sDR = serialDataRecieved;
     data = sDR.split("|||");
     data.removeAll("|");
+    qDebug()<<data;
+    ui->label->setText("Angle: "+data[0]);
         if (data.size() == 2 and data[0].size() < 4 )
         {
         points.append(point{data[0].toInt(),data[1].toInt()});
@@ -73,9 +75,23 @@ void MainWindow::paintEvent(QPaintEvent *e)
 {
     QPainter painter(this);
     QPen pen( Qt::green );
-    pen.setWidth(5);
+    pen.setWidth(4);
     painter.setPen(pen);
 
+    painter.drawLine(20,240,500,240);
+    for (int i = 240; i > 0; i = i - 120)
+    painter.drawLine(240,240,i,20);
+    for (int i = 240; i > 0; i = i - 120)
+    painter.drawLine(240,240,0,i);
+
+    for (int i = 240; i < 480; i = i + 120)
+    painter.drawLine(240,240,i,20);
+    for (int i = 240; i > 0; i = i - 120)
+    painter.drawLine(240,240,500,i);
+
+    QPoint center(240,240);
+    for (int i = 0; i < 240; i = i + 40)
+    painter.drawEllipse(center,i,i);
 }
 
 void MainWindow::update_screen()

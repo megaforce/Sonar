@@ -44,7 +44,7 @@ private:
     QString arduino_port_name;
     bool arduino_is_available;
     QTimer *timer;
-    void getSerialData();
+    void getSerialData();    
 
 protected:
   void paintEvent(QPaintEvent *e);
